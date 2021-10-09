@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "uuid": "^8.3"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.991.0"
+  },
+  "name": "pdf-gen",
+  "version": "1.0.0",
+  "main": "dist/pdf/index",
+  "scripts": {
+    "test-local": "sls invoke local -f postTodo -p testData.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
