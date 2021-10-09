@@ -17,6 +17,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
+        - dynamodb:DeleteItem
       Resource: "*"
 
 functions:
@@ -26,6 +27,18 @@ functions:
       - http: 
           path: postTodo
           method: post
+  getTodos:
+    handler: handler.getTodos
+    events:
+      - http: 
+          path: getTodos
+          method: get
+  deleteTodo:
+    handler: handler.deleteTodo
+    events:
+      - http: 
+          path: deleteTodo/{id}
+          method: delete
 
 resources:
   Resources:
