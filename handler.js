@@ -42,6 +42,30 @@ module.exports.postTodo = (event, context, callback) => {
     });
 };
 
+module.exports.getTodo = (event, context, callback) => {
+  const { id } = event.pathParameters;
+
+  getTodo(id)
+    .then((res) => {
+      console.log(res);
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify({
+          todo: res,
+        }),
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      callback(null, {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: `Unable to fetch todo ${id}`,
+        }),
+      });
+    });
+};
+
 module.exports.getTodos = (event, context, callback) => {
   fetchTodos()
     .then((res) => {
@@ -133,6 +157,12 @@ const insertTodo = (todo) => {
     .then((res) => todo);
 };
 
+const getTodo = async (todoId) => {
+  console.log("Fetching todo");
+  let params = { TableName: process.env.TODO_TABLE, Key: { id: todoId } };
+  return dynamoDb.get(params).promise();
+};
+
 const fetchTodos = async () => {
   console.log("Fetching all todos");
   let params = { TableName: process.env.TODO_TABLE };
@@ -163,7 +193,5 @@ const updateTodo = async (todo) => {
       ":titleVal": todo.title,
     },
   };
-  return dynamoDb
-    .update(params)
-    .promise();
+  return dynamoDb.update(params).promise();
 };

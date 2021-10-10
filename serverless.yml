@@ -28,6 +28,12 @@ functions:
       - http: 
           path: postTodo
           method: post
+  getTodo:
+    handler: handler.getTodo
+    events:
+      - http: 
+          path: getTodo/{id}
+          method: get
   getTodos:
     handler: handler.getTodos
     events:
