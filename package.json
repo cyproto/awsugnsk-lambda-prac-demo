@@ -3,7 +3,8 @@
     "uuid": "^8.3"
   },
   "devDependencies": {
-    "aws-sdk": "^2.991.0"
+    "aws-sdk": "^2.991.0",
+    "serverless-offline": "^8.2.0"
   },
   "name": "pdf-gen",
   "version": "1.0.0",
