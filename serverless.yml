@@ -23,31 +23,31 @@ provider:
 
 functions:
   postTodo:
-    handler: handler.postTodo
+    handler: handler.handle
     events:
       - http: 
           path: postTodo
           method: post
   getTodo:
-    handler: handler.getTodo
+    handler: handler.handle
     events:
       - http: 
           path: getTodo/{id}
           method: get
   getTodos:
-    handler: handler.getTodos
+    handler: handler.handle
     events:
       - http: 
           path: getTodos
           method: get
   deleteTodo:
-    handler: handler.deleteTodo
+    handler: handler.handle
     events:
       - http: 
           path: deleteTodo/{id}
           method: delete
   updateTodo:
-    handler: handler.updateTodo
+    handler: handler.handle
     events:
       - http: 
           path: updateTodo
