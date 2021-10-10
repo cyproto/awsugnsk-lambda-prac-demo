@@ -49,7 +49,7 @@ module.exports.getTodos = (event, context, callback) => {
       callback(null, {
         statusCode: 200,
         body: JSON.stringify({
-          res,
+          todos: res,
         }),
       });
     })
@@ -73,7 +73,7 @@ module.exports.deleteTodo = (event, context, callback) => {
       callback(null, {
         statusCode: 200,
         body: JSON.stringify({
-          res,
+          message: `${id} inserted successfully`,
         }),
       });
     })
@@ -83,6 +83,39 @@ module.exports.deleteTodo = (event, context, callback) => {
         statusCode: 500,
         body: JSON.stringify({
           message: `Unable to delete todo ${id}`,
+        }),
+      });
+    });
+};
+
+module.exports.updateTodo = (event, context, callback) => {
+  const requestData = JSON.parse(event.body);
+
+  if (!requestData || !requestData.id || !requestData.title)
+    callback(
+      null,
+      JSON.stringify({
+        status: "error",
+        message: "Request data or todo is empty",
+      })
+    );
+
+  updateTodo(requestData)
+    .then((res) => {
+      console.log(res);
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: `${requestData.id} updated successfully`,
+        }),
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      callback(null, {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: `Unable to update todo ${requestData.id}`,
         }),
       });
     });
@@ -115,8 +148,22 @@ const fetchTodos = async () => {
 };
 
 const deleteTodo = async (todoId) => {
+  console.log("Deleting todo");
   let params = { TableName: process.env.TODO_TABLE, Key: { id: todoId } };
+  return dynamoDb.delete(params).promise();
+};
+
+const updateTodo = async (todo) => {
+  console.log("Updating todo");
+  let params = {
+    TableName: process.env.TODO_TABLE,
+    Key: { id: todo.id },
+    UpdateExpression: "set title = :titleVal",
+    ExpressionAttributeValues: {
+      ":titleVal": todo.title,
+    },
+  };
   return dynamoDb
-    .delete(params)
+    .update(params)
     .promise();
 };

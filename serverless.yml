@@ -18,6 +18,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:DeleteItem
+        - dynamodb:UpdateItem
       Resource: "*"
 
 functions:
@@ -39,6 +40,12 @@ functions:
       - http: 
           path: deleteTodo/{id}
           method: delete
+  updateTodo:
+    handler: handler.updateTodo
+    events:
+      - http: 
+          path: updateTodo
+          method: put
 
 resources:
   Resources:
